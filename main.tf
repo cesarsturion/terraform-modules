@@ -13,24 +13,22 @@ terraform {
 }
 
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source = "./vpc"
 
-  name = "my-vpc"
+  name = "gudiao-labs"
   cidr = "10.0.0.0/16"
 
-  azs               = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  azs               = ["us-east-1a", "us-east-1b", "us-east-1c"]
 
-  public_subnets    = ["10.0.201.0/24", "10.0.202.0/24"]
+  private_subnets   = ["10.0.1.0/24", "10.0.2.0/24"]
+  public_subnets    = ["10.0.11.0/24", "10.0.12.0/24"]
+  database_subnets  = ["10.0.21.0/24", "10.0.22.0/24"]
+  mgmt_subnets      = ["10.0.31.0/24", "10.0.32.0/24"]
+
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  private_subnets   = ["10.0.101.0/24", "10.0.102.0/24"]
-
-  database_subnets  = ["10.0.301.0/24", "10.0.302.0/24"]
   create_database_subnet_group = false
-
-  mgmt_subnets     = ["10.0.401.0/24", "10.0.402.0/24"]
-
 
   tags = {
     Terraform = "true"

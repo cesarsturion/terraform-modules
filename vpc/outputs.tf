@@ -43,6 +43,46 @@ output "public_subnets_cidr_blocks" {
   value       = aws_subnet.public.*.cidr_block
 }
 
+output "database_subnets" {
+  description = "List of IDs of database subnets"
+  value       = aws_subnet.database.*.id
+}
+
+output "database_subnet_arns" {
+  description = "List of ARNs of database subnets"
+  value       = aws_subnet.database.*.arn
+}
+
+output "database_subnets_cidr_blocks" {
+  description = "List of cidr_blocks of database subnets"
+  value       = aws_subnet.database.*.cidr_block
+}
+
+# output "database_subnet_group_name" {
+#   description = "ID of database subnet group"
+#   value       = concat(aws_db_subnet_group.database.*.name', [""])[0]
+# }
+
+# output "database_subnet_group_arns" {
+#   description = "ID of database subnet group"
+#   value       = concat(aws_db_subnet_group.database.*.arn, [""])[0]
+# }
+
+output "mgmt_subnets" {
+  description = "List of IDs of mgmt subnets"
+  value       = aws_subnet.mgmt.*.id
+}
+
+output "mgmt_subnet_arns" {
+  description = "List of ARNs of mgmt subnets"
+  value       = aws_subnet.database.*.arn
+}
+
+output "mgmt_subnets_cidr_blocks" {
+  description = "List of cidr_blocks of mgmt subnets"
+  value       = aws_subnet.mgmt.*.cidr_block
+}
+
 # Static values (arguments)
 output "azs" {
   description = "A list of availability zones specified as argument to this module"
