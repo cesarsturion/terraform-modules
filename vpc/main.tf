@@ -108,12 +108,16 @@ resource "aws_subnet" "database" {
   )
 }
 
-resource "aws_db_subnet_group" "database" {
+resource "aws_db_subnet_group" "database_group" {
   count = var.create_vpc && length(var.database_subnets) > 0 && var.create_database_subnet_group ? 1 : 0
 
   name        = lower(var.name)
   description = "Database subnet group for ${var.name}"
   subnet_ids  = aws_subnet.database.*.id
+
+  depends_on = [
+    aws_subnet.database
+  ]
 
   tags = merge(
     {
@@ -170,4 +174,42 @@ resource "aws_egress_only_internet_gateway" "this" {
 
   vpc_id = local.vpc_id
 }
+
+resource "aws_security_group" "security_group" {
+  name        = format("%s", var.name_security_group)
+  description = "Database subnet group for ${var.name_security_group}"
+  vpc_id      = local.vpc_id
+
+  dynamic "ingress" {
+    for_each = var.ingress
+    content {
+      description = ingress.value["description"]
+      from_port   = ingress.value["from_port"]
+      to_port     = ingress.value["to_port"]
+      protocol    = ingress.value["protocol"]
+      cidr_blocks = ingress.value["cidr_blocks"]
+    }
+  }
+
+  dynamic "egress" {
+    for_each = var.egress
+    content {
+      from_port   = egress.value["from_port"] 
+      to_port     = egress.value["to_port"]   
+      protocol    = egress.value["protocol"]  
+      cidr_blocks = [egress.value["cidr_blocks"]] 
+    }
+  }
+
+  tags = merge(
+    {
+      "Name" = format("%s", var.name_security_group)
+    },
+    var.tags,
+    var.security_group_tags,
+  )
+}
+
+
+
 

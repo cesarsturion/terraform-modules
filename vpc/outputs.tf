@@ -58,15 +58,15 @@ output "database_subnets_cidr_blocks" {
   value       = aws_subnet.database.*.cidr_block
 }
 
-# output "database_subnet_group_name" {
-#   description = "ID of database subnet group"
-#   value       = concat(aws_db_subnet_group.database.*.name', [""])[0]
-# }
+output "database_subnet_group_name" {
+  description = "Name of database subnet group"
+  value       = concat(aws_db_subnet_group.database_group.*.name, [""])[0]
+}
 
-# output "database_subnet_group_arns" {
-#   description = "ID of database subnet group"
-#   value       = concat(aws_db_subnet_group.database.*.arn, [""])[0]
-# }
+output "database_subnet_group_subnet_ids" {
+  description = "Subnet ID of database subnet group"
+  value       = concat(aws_db_subnet_group.database_group.*.subnet_ids, [""])[0]
+}
 
 output "mgmt_subnets" {
   description = "List of IDs of mgmt subnets"
@@ -75,7 +75,7 @@ output "mgmt_subnets" {
 
 output "mgmt_subnet_arns" {
   description = "List of ARNs of mgmt subnets"
-  value       = aws_subnet.database.*.arn
+  value       = aws_subnet.mgmt.*.arn
 }
 
 output "mgmt_subnets_cidr_blocks" {

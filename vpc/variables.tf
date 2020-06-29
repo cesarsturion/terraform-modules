@@ -167,3 +167,33 @@ variable "reuse_nat_ips" {
   default     = false
 }
 
+variable "name_security_group" {
+  type = string
+  description = "Name of Security Group"
+  default = ""
+}
+
+variable "ingress" {
+  type = map(string)
+  description = "Ingress map to configure the security group"
+  default = {}
+}
+
+variable "egress" {
+  type = map(string)
+  description = "Egress map to configure the security group"
+  default = {
+    from_port = 0
+    to_port = 0
+    protocol = "tcp"
+    cidr_blocks = "0.0.0.0/0"
+  }
+}
+
+variable "security_group_tags" {
+  type = map(string)
+  description = "Additional tags for security group"
+  default = {}
+}
+
+
